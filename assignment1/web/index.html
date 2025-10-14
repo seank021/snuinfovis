@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IMDB Decade Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header>
+        <h1>IMDB Decade Comparison</h1>
+        <p class="subtitle">
+            두 개의 Decade를 선택해 장르 분포, 러닝타임vs평점, 관객vs평론가, 특성 중요도, 감독-배우 협업 네트워크를 비교할 수 있습니다.<br/>
+            이를 통해 각 시대별 영화 산업의 트렌드와 변화를 직관적으로 이해할 수 있습니다.
+        </p>
+    </header>
+
+    <section class="controls">
+        <div class="uploader">
+            <label class="filelabel">
+                CSV 업로드 (imdb_top_1000.csv)
+                <input id="fileInput" type="file" accept=".csv" />
+            </label>
+        </div>
+        →
+        <div class="control">
+            <label for="decadeA">Decade A</label>
+            <select id="decadeA"></select>
+        </div>
+        <div class="control">
+            <label for="decadeB">Decade B</label>
+            <select id="decadeB"></select>
+        </div>
+        →
+        <button id="updateBtn">시각화 업데이트</button>
+    </section>
+
+    <section class="cards" id="statsCards"></section>
+
+    <main class="grid">
+        <section class="card">
+            <div class="card-header">
+                <h2>장르 분포</h2>
+                <div class="btn-group" id="genreToggle">
+                <button class="btn btn-sm active" id="btnGenreStacked">Stacked</button>
+                <button class="btn btn-sm" id="btnGenreHorizontal">Horizontal</button>
+                </div>
+            </div>
+            <div id="genreChart" style="height:420px;"></div>
+        </section>
+        <div class="panel">
+            <h2>러닝타임 vs IMDB 평점</h2>
+            <div id="runtimeChart" class="chart"></div>
+        </div>
+        <div class="panel full">
+            <h2>관객 vs 평론가</h2>
+            <div id="audCritChart" class="chart"></div>
+        </div>
+        <div class="panel full">
+            <h2>특성 중요도</h2>
+            <div id="fiChart" class="chart"></div>
+            <p class="note">
+                * 간단한 다중선형회귀(표준화 X, y)로 추정한 중요도 (설명 변수: runtime, logVotes, metascore, gross)
+            </p>
+        </div>
+        <div class="panel full">
+            <h2>감독-배우 협업 네트워크</h2>
+            <div class="net-controls">
+                <button id="degMinus" title="Show more (lower degree threshold)">–</button>
+                <span id="degLabel">deg ≥ 4</span>
+                <button id="degPlus" title="Show core (higher degree threshold)">+</button>
+            </div>
+            <div class="network-grid">
+                <div>
+                    <h3 id="netTitleA">Network (A)</h3>
+                    <svg id="netA" class="netsvg"></svg>
+                    <div id="netInfoA" class="net-info"></div>
+                </div>
+                <div>
+                    <h3 id="netTitleB">Network (B)</h3>
+                    <svg id="netB" class="netsvg"></svg>
+                    <div id="netInfoB" class="net-info"></div>
+                </div>
+            </div>
+            <div class="note">🔵: 감독, 🟢: 배우</div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
