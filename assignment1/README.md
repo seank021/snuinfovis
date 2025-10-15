@@ -10,7 +10,7 @@
 ## 1. 폴더 구조
 
 ```
-ASSIGNMENT1/
+assignment1/
 ├─ imdb_top_1000.csv
 ├─ README.md
 └─ web/
@@ -22,7 +22,7 @@ ASSIGNMENT1/
 ## 2. 실행 방법
 
 ### 2.1. 로컬 서버 실행
-프로젝트 루트에서 터미널 열고 다음 명령어 실행:
+`assignment1/`에서 터미널 열고 다음 명령어 실행:
 ```bash
 open web/index.html
 ```
